@@ -34,6 +34,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="order" />
+        android:text="order"
+        android:onClick="submitOrder"/>
 
 </LinearLayout>
