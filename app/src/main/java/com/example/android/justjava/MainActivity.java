@@ -3,6 +3,7 @@ package com.example.android.justjava;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -17,15 +18,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        displayQuantity(quantity);
-        displayMessage("$0");
     }
 
     /**
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        displayMessage(createOrderSummary(calculatePrice()));
+        CheckBox whippedCreamCheckbox = (CheckBox) findViewById(R.id.whipped_cream_checkbox);
+        boolean hasWhippedCream = whippedCreamCheckbox.isChecked();
+        displayMessage(createOrderSummary(calculatePrice(),hasWhippedCream));
     }
 
     public void increment(View view) {
@@ -64,7 +65,12 @@ public class MainActivity extends AppCompatActivity {
         return quantity * pricePerCup;
     }
 
-    private String createOrderSummary(int price){
-        return "Name: Kaptain Kunal \n Quantity: "+ quantity + "\n Total: $" + price + "\n Thank you!";
+    private String createOrderSummary(int price, boolean hasWhippedCream){
+        String summary = "Name: Kaptain Kunal";
+         summary += "\n Add whipped cream? " + hasWhippedCream;
+         summary += "\n Quantity: " + quantity;
+         summary += "\n Total: $" + price;
+         summary += "\n Thank you!";
+        return summary;
     }
 }
