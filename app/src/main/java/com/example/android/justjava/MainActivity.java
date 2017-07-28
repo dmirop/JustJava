@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        display(quantity);
+        displayQuantity(quantity);
         displayPrice(0);
     }
 
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        String priceMessage = "Total: $"+ quantity*5 + "\n" + "Thank you!";
+        String priceMessage = "Total: $"+ calculatePrice() + "\n" + "Thank you!";
         displayMessage(priceMessage);
     }
 
@@ -61,5 +61,16 @@ public class MainActivity extends AppCompatActivity {
     private void displayPrice(int number) {
         TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
+    }
+
+    /**
+     * Calculates the price of the order based on the current quantity.
+     *
+     * @return the price
+     */
+    private int calculatePrice() {
+        int pricePerCup = 5;
+        int price = quantity * pricePerCup;
+        return price;
     }
 }
