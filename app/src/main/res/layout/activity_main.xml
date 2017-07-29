@@ -16,9 +16,9 @@
             android:id="@+id/name_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:hint="Name"
-            android:inputType="text"
-            android:layout_marginBottom="16dp" />
+            android:inputType="textCapWords" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="0"
+                android:text="2"
                 android:textColor="@android:color/black" />
 
             <Button
@@ -78,23 +78,7 @@
                 android:onClick="increment"
                 android:text="+" />
 
-
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Order summary"
-            android:textAllCaps="true" />
-
-        <TextView
-            android:id="@+id/order_summary_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:text="0"
-            android:textColor="@android:color/black" />
 
         <Button
             android:layout_width="wrap_content"
@@ -103,4 +87,5 @@
             android:text="order" />
 
     </LinearLayout>
+
 </ScrollView>

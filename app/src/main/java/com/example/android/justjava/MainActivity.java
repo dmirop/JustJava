@@ -1,5 +1,7 @@
 package com.example.android.justjava;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -14,7 +16,7 @@ import java.text.NumberFormat;
  * This app displays an order form to order coffee.
  */
 public class MainActivity extends AppCompatActivity {
-    int quantity = 0;
+    int quantity = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +28,34 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
+
         CheckBox whippedCreamCheckbox = (CheckBox) findViewById(R.id.whipped_cream_checkbox);
         CheckBox chocolateCheckbox = (CheckBox) findViewById(R.id.chocolate_checkbox);
-        EditText nameEdittext = (EditText) findViewById(R.id.name_editText);
+        EditText nameField = (EditText) findViewById(R.id.name_editText);
         boolean hasWhippedCream = whippedCreamCheckbox.isChecked();
         boolean hasChocolate = chocolateCheckbox.isChecked();
-        Editable name = nameEdittext.getText();
-        displayMessage(createOrderSummary(name,calculatePrice(),hasWhippedCream,hasChocolate));
+        String name = nameField.getText().toString();
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "JustJava order for " + name);
+        intent.putExtra(Intent.EXTRA_TEXT, createOrderSummary(name, calculatePrice(hasWhippedCream, hasChocolate), hasWhippedCream, hasChocolate));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     public void increment(View view) {
-        quantity += 1;
+        if (quantity < 100) {
+            quantity += 1;
+        }
         displayQuantity(quantity);
     }
 
     public void decrement(View view) {
-        quantity -= 1;
+        if (quantity > 1) {
+            quantity -= 1;
+        }
         displayQuantity(quantity);
     }
 
@@ -54,20 +68,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * This method displays the given text on the screen.
-     */
-    private void displayMessage(String message) {
-        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
-        orderSummaryTextView.setText(message);
-    }
-
-    /**
      * Calculates the price of the order based on the current quantity.
      *
      * @return the price
      */
-    private int calculatePrice() {
+    private int calculatePrice(boolean addWhippedCream, boolean addChocolate) {
         int pricePerCup = 5;
+        if (addWhippedCream) {
+            pricePerCup += 1;
+        }
+        if (addChocolate) {
+            pricePerCup += 2;
+        }
         return quantity * pricePerCup;
     }
 
@@ -80,13 +92,13 @@ public class MainActivity extends AppCompatActivity {
      * @param addChocolate
      * @return text summary
      */
-    private String createOrderSummary(Editable name, int price, boolean addWhippedCream, boolean addChocolate){
+    private String createOrderSummary(String name, int price, boolean addWhippedCream, boolean addChocolate) {
         String summary = "Name: " + name;
-         summary += "\n Add whipped cream? " + addWhippedCream;
-         summary += "\n Add chocolate? " + addChocolate;
-         summary += "\n Quantity: " + quantity;
-         summary += "\n Total: $" + price;
-         summary += "\n Thank you!";
+        summary += "\nAdd whipped cream? " + addWhippedCream;
+        summary += "\nAdd chocolate? " + addChocolate;
+        summary += "\nQuantity: " + quantity;
+        summary += "\nTotal: $" + price;
+        summary += "\nThank you!";
         return summary;
     }
 }
